@@ -7,6 +7,11 @@ Containers workflow.
 
 ## Start a project
 
+TechnoDev is the **starter repository**. After you clone it and begin a real Python
+project, this README should be rewritten to describe that project's purpose,
+setup, inputs, commands, and outputs. Do not keep the starter README as the
+long-term project README simply because the code originated from TechnoDev.
+
 Install Python 3.12 and [uv](https://docs.astral.sh/uv/), then synchronize the
 locked development dependencies and run the example:
 
@@ -106,6 +111,10 @@ optional [task brief](docs/task-template.md) for substantial work. Review the
 changes and reported validation. Shared guidance is provider-independent and
 does not require an AI SDK or API key.
 
-After cloning, update the README, agent guidance, and project context for the
-actual project. The [development design](docs/python-development-design.md)
-records the layout and modeling conventions behind this starter.
+After cloning and starting the real project, replace the starter-facing parts of
+README with project-facing documentation: what the project does, how to set it
+up with uv, its main workflows, inputs/outputs, and project-specific validation.
+Also update agent guidance and project context. The
+[development design](docs/python-development-design.md) records the layout and
+modeling conventions behind this starter and can remain as historical/reference
+documentation unless the clone's design intentionally diverges.
