@@ -23,9 +23,9 @@ contains the current setup and run commands.
 - `AGENTS.md`: shared engineering and modeling instructions for agents.
 - `pyproject.toml`, `uv.lock`, `.python-version`: package, dependency, and Python setup.
 - `src/project/`: reusable package logic.
-- `scripts/`, `tests/`, `notebooks/`: example entry point, checks, and analytics example.
+- `scripts/`, `tests/`, `notebooks/`: example entry point, optional rename helper, starter checks, and analytics example.
 - `Dockerfile`, `.dockerignore`, `.devcontainer/`: optional container development.
-- `.github/workflows/checks.yml`: locked CI checks.
+- `.github/workflows/checks.yml`: locked CI checks including a built-wheel smoke test.\n- `.github/dependabot.yml`: monthly GitHub Actions update checks.
 - `docs/python-development-design.md`: intended starter layout and workflow.
 - `docs/tutorial.md`: hands-on guide to local development, notebooks, and Docker.
 - `docs/project-context.md`: purpose, current structure, and constraints.
@@ -33,7 +33,7 @@ contains the current setup and run commands.
 
 ## Decisions and constraints
 
-- Each clone is independent; no project generator or TechnoDev runtime is needed.
+- Each clone is independent; no project generator or TechnoDev runtime is needed. The optional rename helper only edits the freshly cloned starter in place.
 - The baseline uses uv, pytest, Ruff, and a small installable Python package.
 - Local development is the default. Optional Docker development shares dependency
   metadata and the lockfile while keeping its environment separate from the host.
