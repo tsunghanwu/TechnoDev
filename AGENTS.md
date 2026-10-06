@@ -6,6 +6,25 @@
 - Use the actual uv commands in `README.md`; report checks as passed only when they have run successfully in the selected environment.
 - Update project context when the purpose, structure, or workflow changes. Keep task-specific discussion out of permanent instructions.
 
+## TechnoDev Design
+- TechnoDev is a **cloneable Python starter**, not a runtime framework, generator service, or dependency that downstream projects keep using.
+- A fresh clone becomes an independent Python project. The one-time rename helper may rename the neutral `project` package, after which the clone should evolve around its own domain and requirements.
+- Reusable code belongs under the installable package in `src/<package>/`. Keep `scripts/` as thin entry points, `notebooks/` for exploration and analysis, and `tests/` for focused automated validation.
+- Keep local development as the default. Docker and Dev Containers are optional environments that consume the same project metadata and lockfile rather than defining a second dependency workflow.
+- Do not add scientific or framework dependencies to the starter by assumption. Add only what the actual project needs.
+- After turning the starter into a real project, update `README.md`, `docs/project-context.md`, and this file so they describe the project that now exists rather than TechnoDev starter behavior.
+
+## uv Project Flow
+- Treat `pyproject.toml` as the source of declared project metadata and dependencies, and commit `uv.lock` as the reproducible resolved environment. Do not introduce a parallel `requirements.txt` workflow unless the project explicitly requires one.
+- Use the committed Python baseline from `.python-version`; keep it consistent with `requires-python`, Ruff configuration, CI, and container configuration when changing Python versions.
+- Synchronize a clone or changed lockfile with `uv sync --locked`. uv manages the local `.venv`; activation is optional because project commands should normally run through `uv run`.
+- Run project commands through the locked environment, for example `uv run --locked pytest`, `uv run --locked ruff check .`, and `uv run --locked python <script>`.
+- Add runtime dependencies with `uv add <package>`; add development-only tools with `uv add --dev <package>`; add notebook-only dependencies to the notebook group when appropriate. Commit the resulting `pyproject.toml` and `uv.lock` changes together.
+- Do not use `pip install` directly into the project environment for persistent dependencies, and do not hand-edit `uv.lock`.
+- When intentionally changing dependency constraints or project metadata, refresh the lockfile with uv and then validate with locked commands. When only consuming the committed environment, prefer `--locked` so unexpected lockfile drift fails visibly.
+- Building a wheel is not required for normal development: uv installs the package in editable form during sync, so changes under `src/` are immediately available to scripts and tests. Build/package validation is a release or CI boundary check, not a prerequisite for editing code.
+- For notebooks, install/select the notebook dependency group and use the same project environment; do not create a separate notebook dependency file or install packages from notebook cells.
+
 ## Core Principles
 - Work as a careful software engineer: understand the request and the existing project before making changes.
 - Prefer the smallest change that fully solves the requested problem. Avoid unrelated refactors and feature creep.
