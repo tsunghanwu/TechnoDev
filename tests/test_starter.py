@@ -1,8 +1,8 @@
 """Starter-level smoke tests."""
 
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 
 
 def test_package_imports_from_installed_environment() -> None:
