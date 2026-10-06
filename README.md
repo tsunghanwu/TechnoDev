@@ -21,8 +21,19 @@ uv run --locked ruff format --check .
 The installable package lives in `src/project/`; scripts, tests, and notebooks
 import it directly. Add runtime libraries with `uv add <library>` and development
 tools with `uv add --dev <tool>`. Both update `pyproject.toml` and `uv.lock`.
-Rename the `project` distribution and import package in `pyproject.toml` and
-`src/`, update imports and tests, then run `uv lock`.
+
+After cloning, optionally rename the neutral starter package with:
+
+```bash
+uv run python scripts/rename_project.py my_project
+uv lock
+uv sync --locked
+uv run --locked pytest
+```
+
+The helper accepts a lowercase snake_case Python package name and updates the
+distribution name, package directory, example script, and tests. It is a one-time
+clone convenience, not a TechnoDev runtime or project generator.
 
 For a hands-on walkthrough of local setup, package logic, checks, notebooks, and
 optional Docker development, see the [starter tutorial](docs/tutorial.md).
@@ -79,6 +90,13 @@ The environment lives in `/opt/venv`, outside the source mount.
 VS Code users can reopen the repository in a Dev Container; it uses the same
 Dockerfile, selects `/opt/venv/bin/python`, forwards port 8888, and synchronizes
 locked dependencies after creation.
+
+## Maintenance
+
+GitHub Dependabot checks GitHub Actions monthly. The uv version is deliberately
+pinned in both `.github/workflows/checks.yml` and `Dockerfile`; update those two
+pins together when upgrading uv. CI also builds the package and installs the
+wheel into a clean temporary environment to catch packaging-boundary failures.
 
 ## AI pair programming
 
