@@ -27,7 +27,29 @@ uv run --locked python scripts/example.py
 It prints the mean of three sample values. `uv run` uses this repository's
 environment, so there is no need to activate `.venv` manually.
 
-## 2. Find the shared project logic
+## 2. Turn TechnoDev into your project
+
+A fresh clone still uses the neutral `project` package name. If you want a
+project-specific package name, run the one-time rename helper before building out
+the project:
+
+```bash
+uv run python scripts/rename_project.py my_project
+uv lock
+uv sync --locked
+uv run --locked pytest
+uv run --locked ruff check .
+uv run --locked ruff format --check .
+```
+
+Use a lowercase snake_case package name. The helper updates the distribution
+name, package directory, example script, and tests. Review the resulting diff,
+then update `README.md` and `docs/project-context.md` with the real project's
+purpose, structure, inputs, and constraints. Review `AGENTS.md` too, adding
+project-specific engineering or modeling guidance only when it is genuinely
+shared across tasks.
+
+## 3. Find the shared project logic
 
 The script imports `mean` from `src/project/__init__.py`. This package is where
 reusable calculations and transformations belong. Keep scripts as small entry
@@ -45,7 +67,7 @@ When adding package behavior, put its test beside the related tests. For scienti
 work, make units, assumptions, parameters, and tolerances explicit; use small,
 deterministic examples for routine tests.
 
-## 3. Run the project checks
+## 4. Run the project checks
 
 The development group contains pytest and Ruff. Run the same checks used by CI:
 
@@ -58,7 +80,7 @@ uv run --locked ruff format --check .
 If Ruff reports formatting changes, apply them with `uv run ruff format .`, then
 review the diff. CI runs these checks after installing the committed lockfile.
 
-## 4. Add a dependency
+## 5. Add a dependency
 
 Add a runtime library to the project with:
 
@@ -77,7 +99,7 @@ other developers and CI can reproduce the environment. The starter has no
 scientific runtime dependencies; select numerical, plotting, data, or machine
 learning libraries based on the actual project.
 
-## 5. Work with the example notebook
+## 6. Work with the example notebook
 
 Install the optional notebook dependencies and launch JupyterLab from the root:
 
@@ -95,14 +117,39 @@ committing by default.
 The notebook group is optional. A script-only checkout can use `uv sync --locked`
 without installing JupyterLab and ipykernel.
 
-## 6. Keep local files out of Git
+## 7. Keep local files out of Git
 
 Put local input data under `data/` and generated figures, results, and model
 artifacts under `outputs/`. Their contents are ignored by default. Commit small,
 approved test fixtures under `tests/fixtures/` when a test needs them. Do not put
 credentials or private datasets in the repository.
 
-## 7. Use Docker instead (optional)
+## 8. Work with an AI coding agent
+
+TechnoDev keeps agent guidance in the repository so the same workflow can be
+used with different coding agents. Before a substantial task, have the agent
+read `AGENTS.md`, `docs/project-context.md`, and the relevant implementation
+or design files.
+
+A useful first task is a small numerical change, for example:
+
+```text
+Add an RMSE function for measured and predicted values. Follow AGENTS.md,
+make numerical assumptions explicit, add focused tests, run the applicable
+project checks, and report the validation that actually ran.
+```
+
+For non-trivial work, the intended loop is: understand the existing project,
+present a concise plan, implement a focused change, validate it, and report the
+changed behavior, assumptions, checks, and remaining risks. Use
+`docs/task-template.md` when a task needs explicit goals, constraints, or
+acceptance criteria.
+
+Keep provider-specific authentication and machine settings outside the
+repository. The committed guidance should remain useful whether the agent runs
+locally, in an editor, or through another development environment.
+
+## 9. Use Docker instead (optional)
 
 Docker uses the same `pyproject.toml` and `uv.lock`; its environment lives at
 `/opt/venv`, outside the mounted repository. On Linux, build with your user and
@@ -144,3 +191,27 @@ refresh the lockfile. Update `README.md`, `AGENTS.md`, and
 `docs/project-context.md` so they describe the new project's purpose and actual
 commands. Use the [task brief](task-template.md) when an agent needs more context
 for a substantial change.
+
+
+## 10. Recommended daily workflow
+
+Start work by synchronizing the committed environment when dependencies may have
+changed:
+
+```bash
+uv sync --locked
+```
+
+During development, run the relevant script, focused test, or notebook first.
+Before committing a normal code change, run the project checks:
+
+```bash
+uv run --locked pytest
+uv run --locked ruff check .
+uv run --locked ruff format --check .
+```
+
+Add dependencies through uv rather than installing them directly into the
+environment. Keep reusable logic under the package, use scripts and notebooks
+for orchestration and exploration, and update project context when the project's
+purpose, structure, workflow, or important modeling assumptions change.
