@@ -11,7 +11,7 @@ a pair programmer.
 The starter is implemented. The old generator has been removed. The repository
 contains a setuptools package, uv manifest and lockfile, example script and
 notebook, pytest/Ruff checks, GitHub Actions workflow, and optional Docker and
-Dev Container configuration.
+Dev Container configuration shared with GitHub Codespaces.
 
 The layout and conventions are described in
 [the development design](python-development-design.md). The [README](../README.md)
@@ -37,7 +37,9 @@ contains the current setup and run commands.
 - The baseline uses uv, pytest, Ruff, and a small installable Python package.
 - Local development is the default. Optional Docker development shares dependency
   metadata and the lockfile while keeping its environment separate from the host.
-  VS Code Dev Containers integration uses the same development image.
+  VS Code Dev Containers and GitHub Codespaces use the same development image,
+  leave workspace mounting to the container tooling, and use `/opt/venv` for uv,
+  terminal Python, the editor interpreter, and notebook kernels.
 - The selectable `notebook` group includes JupyterLab and
   ipykernel, plus a small example notebook. Scientific libraries are chosen per
   project; notebook execution uses the same environment as scripts and tests.

@@ -4,8 +4,6 @@
     "dockerfile": "../Dockerfile",
     "context": ".."
   },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
-  "workspaceFolder": "/workspace",
   "remoteUser": "developer",
   "updateRemoteUserUID": true,
   "postCreateCommand": "uv sync --locked --group dev --group notebook",

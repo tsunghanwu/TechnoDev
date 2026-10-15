@@ -6,6 +6,8 @@ ARG GROUP_ID=1000
 
 COPY --from=uv /uv /uvx /usr/local/bin/
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv \
+    VIRTUAL_ENV=/opt/venv \
+    PATH="/opt/venv/bin:${PATH}" \
     UV_LINK_MODE=copy \
     PYTHONDONTWRITEBYTECODE=1
 
