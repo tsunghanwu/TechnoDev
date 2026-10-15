@@ -3,7 +3,7 @@
 TechnoDev is a cloneable Python starter for scripting, modeling, and Jupyter
 notebook analytics. Each clone is an independent project; there is no generator
 runtime. Local development uses uv, with an optional Docker and VS Code Dev
-Containers workflow.
+Containers and GitHub Codespaces workflow.
 
 ## Start a project
 
@@ -92,9 +92,40 @@ system dependency or Dockerfile changes; synchronize after dependency or lockfil
 changes. Add `-v /path/to/data:/workspace/data:ro` to mount external input data.
 The environment lives in `/opt/venv`, outside the source mount.
 
-VS Code users can reopen the repository in a Dev Container; it uses the same
-Dockerfile, selects `/opt/venv/bin/python`, forwards port 8888, and synchronizes
-locked dependencies after creation.
+## GitHub Codespaces and VS Code Dev Containers
+
+On GitHub, choose **Code → Codespaces → Create codespace on main**. Locally,
+choose **Dev Containers: Reopen in Container** in VS Code. Both use the same
+Dockerfile, install the Python and Jupyter extensions, forward port 8888, and
+synchronize locked development and notebook dependencies after creation.
+The container tooling chooses the repository mount location; commands run from
+that repository root, including Codespaces' `/workspaces/<repository>` directory.
+
+The container uses `/opt/venv`, not a local checkout's `.venv`. uv, the editor,
+terminal Python, and notebook kernels should all use `/opt/venv/bin/python`.
+There is no need to create or activate another virtual environment. Verify with:
+
+```bash
+python -c "import sys, project; print(sys.executable); print(project.__file__)"
+uv run --locked --group notebook python scripts/example.py
+uv run --locked --group notebook pytest
+```
+
+After pulling container configuration changes into an existing Codespace, run
+**Codespaces: Rebuild Container** from the Command Palette. For a local Dev
+Container, use **Dev Containers: Rebuild Container**. If VS Code still shows a
+missing or old `.venv` interpreter, run **Python: Select Interpreter → Enter
+interpreter path** and enter `/opt/venv/bin/python`; a previously selected
+interpreter can override the configured default. For notebooks, use **Select
+Kernel → Python Environments** and select that same interpreter.
+
+If dependency setup failed, inspect the creation log and rerun
+`uv sync --locked --group dev --group notebook` from the repository root.
+Keep `--group notebook` on subsequent `uv sync` and `uv run` commands when using
+notebooks, so uv retains the notebook tools. To launch JupyterLab in Codespaces,
+run `uv run --locked --group notebook jupyter lab --ip=0.0.0.0 --no-browser`,
+then open forwarded port 8888 and use the printed token. Keep its visibility
+**Private**.
 
 ## Maintenance
 
