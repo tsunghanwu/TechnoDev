@@ -1,57 +1,44 @@
 # Project Context
 
-## Purpose
+## Purpose and status
 
-TechnoDev is a repository to clone for independent Python
-scripting, modeling, and Jupyter notebook analytics projects, with an AI agent as
-a pair programmer.
-
-## Current state
-
-The starter is implemented. The old generator has been removed. The repository
-contains a setuptools package, uv manifest and lockfile, example script and
-notebook, pytest/Ruff checks, GitHub Actions workflow, and optional Docker and
-Dev Container configuration shared with GitHub Codespaces.
-
-The layout and conventions are described in
-[the development design](python-development-design.md). The [README](../README.md)
-contains the current setup and run commands.
+TechnoDev is a public, cloneable Python 3.12 starter for scripting, numerical
+modeling, and notebook-based analytics. Each copy becomes a standalone project;
+the removed generator is not required at runtime. Local development uses uv,
+pytest, and Ruff. JupyterLab and container development are optional.
 
 ## Repository map
 
-- `README.md`: entry point and current status.
-- `AGENTS.md`: shared engineering and modeling instructions for agents.
-- `pyproject.toml`, `uv.lock`, `.python-version`: package, dependency, and Python setup.
+- `pyproject.toml`, `uv.lock`, `.python-version`: package metadata, dependencies,
+  lockfile, and Python baseline.
 - `src/project/`: reusable package logic.
-- `scripts/`, `tests/`, `notebooks/`: example entry point, optional rename helper, starter checks, and analytics example.
-- `Dockerfile`, `.dockerignore`, `.devcontainer/`: optional container development.
-- `.github/workflows/checks.yml`: locked CI checks including a built-wheel smoke test.\n- `.github/dependabot.yml`: monthly GitHub Actions update checks.
-- `docs/python-development-design.md`: intended starter layout and workflow.
-- `docs/tutorial.md`: hands-on guide to local development, notebooks, and Docker.
-- `docs/project-context.md`: purpose, current structure, and constraints.
-- `docs/task-template.md`: optional brief for substantial tasks.
+- `scripts/`: runnable examples and the one-time package rename helper.
+- `tests/`: package and starter workflow checks.
+- `notebooks/`: optional synthetic-data analytics example.
+- `README.md`: project introduction, quick start, and links to guides.
+- `AGENTS.md`: concise, provider-independent engineering guidance.
+- `docs/tutorial.md`: first-project setup, validation, and optional environments.
+- `docs/python-development-design.md`: architecture and workflow decisions.
+- `docs/task-template.md`: optional task brief.
+- `Dockerfile`, `.dockerignore`, `.devcontainer/`: optional container setup.
+- `.github/workflows/checks.yml`: locked checks and a built-wheel smoke test.
+- `.github/dependabot.yml`: monthly GitHub Actions dependency update checks.
 
-## Decisions and constraints
+## Constraints
 
-- Each clone is independent; no project generator or TechnoDev runtime is needed. The optional rename helper only edits the freshly cloned starter in place.
-- The baseline uses uv, pytest, Ruff, and a small installable Python package.
-- Local development is the default. Optional Docker development shares dependency
-  metadata and the lockfile while keeping its environment separate from the host.
-  VS Code Dev Containers and GitHub Codespaces use the same development image,
-  leave workspace mounting to the container tooling, and use `/opt/venv` for uv,
-  terminal Python, the editor interpreter, and notebook kernels.
-- The selectable `notebook` group includes JupyterLab and
-  ipykernel, plus a small example notebook. Scientific libraries are chosen per
-  project; notebook execution uses the same environment as scripts and tests.
-- Modeling includes simulation, statistics, optimization, and machine learning;
-  the starter does not assume a specific framework.
-- Keep setup small and avoid adding abstractions for hypothetical future needs.
-- GPU images, multi-service orchestration, and deployment setup remain specific
-  to individual projects.
+- Treat each clone as an independent project. Do not add a TechnoDev runtime,
+  private service dependency, or AI-provider-specific setup.
+- Use `pyproject.toml` and `uv.lock` for dependencies; avoid adding libraries to
+  the starter without a current project need.
+- Keep native local development as the default. The optional container shares the
+  lockfile and uses `/opt/venv`; it does not reuse the host `.venv`.
+- Keep notebooks optional and in the same project environment. Scientific and
+  modeling libraries are chosen by each downstream project.
+- Keep setup small; GPU, cloud deployment, and multi-service infrastructure are
+  project-specific additions.
 
-## Maintaining this document
+## Keeping this context current
 
-After cloning, replace this context with the new project's purpose, actual code
-map, implemented validation commands, and relevant modeling assumptions. Update
-it as those facts change. Record meaningful design decisions here or link to a
-separate decision document when detail is needed.
+When this repository is cloned into a real project, replace the purpose and map
+with that project's actual structure, commands, inputs, and important constraints.
+Record only facts that help future contributors understand or safely change it.

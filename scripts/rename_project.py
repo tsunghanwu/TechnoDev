@@ -40,6 +40,7 @@ def main() -> None:
         root / "pyproject.toml",
         root / "scripts" / "example.py",
         root / "tests" / "test_example.py",
+        root / "tests" / "test_starter.py",
     ):
         replace_text(path, "project", args.name)
 
