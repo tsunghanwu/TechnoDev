@@ -49,9 +49,10 @@ uv lock
 uv sync --locked
 ```
 
-The helper updates the distribution name, package directory, example script, and
-both starter tests. It edits only this copy; it is not a generator or runtime
-dependency. If you keep the `project` name, skip this step.
+The helper updates the distribution name in `[project].name`, moves the package
+directory, and updates imports in the example script, both starter tests, the
+example notebook, and the CI wheel smoke test. It edits only this copy; it is not
+a generator or runtime dependency. If you keep the `project` name, skip this step.
 
 ## 4. Update project metadata and documentation
 
